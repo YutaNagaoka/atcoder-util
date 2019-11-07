@@ -1,7 +1,7 @@
 [package]
 name = "atcoder-util"
 version = "0.1.0"
-authors = ["Yuta Nagaoka"]
+authors = ["Yuta Nagaoka <wani0202nvkdi@gmail.com>"]
 repository = "https://github.com/YutaNagaoka/atcoder-util"
 edition = "2018"
 license-file = "LICENSE"
@@ -13,3 +13,4 @@ description = "Utility command for AtCoder."
 [dependencies]
 reqwest = "0.9.22"
 scraper = "0.11.0"
+clap = "2.33.0"

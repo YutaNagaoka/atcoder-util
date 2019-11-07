@@ -1,9 +1,8 @@
 use std::env;
 use std::io;
 use std::io::Write;
-use std::fs::{ self, File, DirBuilder };
+use std::fs::{ File, DirBuilder };
 use crate::sample_cases::SampleCases;
-use std::path::Path;
 
 
 // Create file of sample cases for each element of `SampleCases` struct.
