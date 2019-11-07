@@ -2,3 +2,5 @@
 .idea
 **/*.rs.bk
 *.txt
+input
+output
