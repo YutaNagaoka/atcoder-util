@@ -33,10 +33,11 @@ fn main() {
 
     if let Some(ref matches) = matches.subcommand_matches("gen") {
         let contest_id = matches.value_of("contest").unwrap();
-        let problem_id = matches.value_of("problem").unwrap();
-        let url = format!("https://atcoder.jp/contests/{}/tasks/{}_{}", contest_id, contest_id, problem_id);
-        let sc = sample_cases::SampleCases::new(&url);
-        file_utils::create_test_files(sc).expect("Failed to execution.")
+        if let Some(problem_id) = matches.value_of("problem") {
+            let contest_url = format!("https://atcoder.jp/contests/{}/tasks/{}_{}", contest_id, contest_id, problem_id);
+            let sc = sample_cases::SampleCases::new(&contest_url);
+            file_utils::create_test_files(sc, problem_id).expect("Failed to execution.")
+        }
     }
     else {
         ()

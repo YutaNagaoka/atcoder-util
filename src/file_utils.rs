@@ -6,24 +6,24 @@ use crate::sample_cases::SampleCases;
 
 
 // Create file of sample cases for each element of `SampleCases` struct.
-pub fn create_test_files(sc: SampleCases) -> Result<(), io::Error> {
-    create_directory("input")?;
-    create_directory("output")?;
+pub fn create_test_files(sc: SampleCases, problem_id: &str) -> Result<(), io::Error> {
+    create_directory(format!("{}_input", problem_id))?;
+    create_directory(format!("{}_output", problem_id))?;
 
     for (i, input_example) in sc.input.iter().enumerate() {
-        let file_name = format!(r"input/input{}.txt", i + 1);
+        let file_name = format!(r"{}_input/input{}.txt", problem_id, i + 1);
         create_test_file(input_example, file_name).expect("Failed to create file.");
     }
 
     for (i, output_example) in sc.output.iter().enumerate() {
-        let file_name = format!(r"output/output{}.txt", i + 1);
+        let file_name = format!(r"{}_output/output{}.txt", problem_id, i + 1);
         create_test_file(output_example, file_name).expect("Failed to create file.");
     }
     Ok(())
 }
 
 // Create directory named `dir_name` under the current directory if it doesn't exist.
-fn create_directory(dir_name: &str) -> io::Result<()> {
+fn create_directory(dir_name: String) -> io::Result<()> {
     let mut dir = env::current_dir()?;
     dir.push(dir_name);
     if dir.is_dir() {
