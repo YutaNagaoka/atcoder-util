@@ -6,7 +6,7 @@ use crate::sample_cases::SampleCases;
 
 
 // Create file of sample cases for each element of `SampleCases` struct.
-pub fn create_test_files(sc: SampleCases, problem_id: &str) -> Result<(), io::Error> {
+pub fn create_test_files(sc: &SampleCases, problem_id: &char) -> Result<(), io::Error> {
     create_directory(format!("{}_input", problem_id))?;
     create_directory(format!("{}_output", problem_id))?;
 
