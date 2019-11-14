@@ -5,6 +5,7 @@ use crate::file_utils;
 use crate::sample_cases::SampleCases;
 use reqwest::Url;
 use scraper::Html;
+use std::io;
 
 /// Struct to contain `Html` and `SampleCases` for each problems.
 ///
@@ -70,20 +71,22 @@ impl Contest {
     }
 
     /// Create files of sample case(s) for each problems.
-    pub fn create_sample_cases_files(&self, problem_id: Option<&str>) {
+    pub fn create_sample_cases_files(&self, problem_id: Option<&str>) -> Result<(), io::Error> {
+        file_utils::create_directory("io_examples".to_string())?;
+
         if let Some(problem_id) = problem_id {
             file_utils::create_test_files(
                 &self.problem_sample_cases[0],
                 &problem_id.chars().nth(0).unwrap(),
-            )
-            .expect("Failed to create files of sample cases.");
+            )?;
         } else {
             let alphabets = (b'a'..=b'z').map(|c| c as char).collect::<Vec<char>>();
             for (sc, alphabet) in self.problem_sample_cases.iter().zip(alphabets.iter()) {
-                file_utils::create_test_files(sc, alphabet)
-                    .expect("Failed to create files of sample cases.");
+                file_utils::create_test_files(sc, alphabet)?;
             }
         }
+
+        Ok(())
     }
 }
 
