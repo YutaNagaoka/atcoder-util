@@ -3,12 +3,15 @@ extern crate scraper;
 
 use scraper::{Html, Selector};
 
+
+/// Struct to contain input/output examples of a problem.
 pub struct SampleCases {
     pub input: Vec<String>,
     pub output: Vec<String>,
 }
 
 impl SampleCases {
+    /// Construct a new `SampleCases`.
     pub fn new(html: &Html) -> SampleCases {
         let mut sc = SampleCases {
             input: Vec::new(),
@@ -19,6 +22,7 @@ impl SampleCases {
         sc
     }
 
+    /// Find elements of i/o examples in html and get them.
     fn parse_io_examples(html: &Html) -> Vec<String> {
         let selector_lang_ja = Selector::parse("span.lang-ja").unwrap();
         let selector_io_example = Selector::parse("pre").unwrap();
@@ -35,6 +39,7 @@ impl SampleCases {
         io_examples
     }
 
+    /// Push i/o examples to vector in a struct itself.
     pub fn extract_io_example(&mut self, io_examples: Vec<String>) {
         for (i, io_example) in io_examples.iter().enumerate() {
             // IO example of even index is input.

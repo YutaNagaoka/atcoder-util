@@ -1,7 +1,7 @@
 use crate::sample_cases::SampleCases;
 use std::env;
 use std::fs::{DirBuilder, File};
-use std::io::{ self, Write };
+use std::io::{self, Write};
 
 // Create file of sample cases for each element of `SampleCases` struct.
 pub fn create_test_files(sc: &SampleCases, problem_id: &char) -> Result<(), io::Error> {

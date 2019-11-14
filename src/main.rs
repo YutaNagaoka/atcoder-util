@@ -40,11 +40,14 @@ fn main() {
         let contest_id = matches.value_of("contest");
         let problem_id = matches.value_of("problem");
 
+        // Problem is specified (such as "a", "b", "c"...).
         if let Some(contest_id) = contest_id {
             let mut contest_info = Contest::new(contest_id, problem_id);
             contest_info.fetch_sample_cases();
             contest_info.create_sample_cases_files(problem_id);
-        } else {
+        }
+        // Or all problems in a contest.
+        else {
             println!("You have to specify from which contest to fetch sample cases.");
         }
     } else {

@@ -6,28 +6,37 @@ use crate::sample_cases::SampleCases;
 use reqwest::Url;
 use scraper::Html;
 
+/// Struct to contain `Html` and `SampleCases` for each problems.
+///
+/// If you tell this struct to fetch all problems in a contest, `i`-th element of `problem_htmls`
+/// or `problem_sample_cases` will be of `i`-th problem in a contest.
+///
+/// Or if you tell this struct to fetch a specific problem in a contest, `problem_htmls` and
+/// `problem_sample_cases` will have one element of the problem.
 pub struct Contest {
     pub problem_htmls: Vec<Html>,
     pub problem_sample_cases: Vec<SampleCases>,
 }
 
 impl Contest {
+    /// Construct a new `Contest`.
     pub fn new(contest_id: &str, problem_id: Option<&str>) -> Contest {
-        let mut c = Contest {
+        let mut contest = Contest {
             problem_htmls: Vec::new(),
             problem_sample_cases: Vec::new(),
         };
         match problem_id {
             Some(problem_id) => {
-                c.fetch_problem_html(contest_id, &problem_id.chars().nth(0).unwrap());
+                contest.fetch_problem_html(contest_id, &problem_id.chars().nth(0).unwrap());
             }
             None => {
-                c.fetch_all_problems_html(contest_id);
+                contest.fetch_all_problems_html(contest_id);
             }
         }
-        c
+        contest
     }
 
+    /// Fetch `Html` of a specific problem based on `contest_id` and `problem_id`.
     fn fetch_problem_html(&mut self, contest_id: &str, problem_id: &char) -> &mut Self {
         let url = format!(
             "https://atcoder.jp/contests/{}/tasks/{}_{}",
@@ -42,6 +51,7 @@ impl Contest {
         self
     }
 
+    /// Fetch `Html` of all problems in a contest specified by `contest_id`.
     fn fetch_all_problems_html(&mut self, contest_id: &str) -> &mut Self {
         let alphabets = (b'a'..=b'z').map(|c| c as char).collect::<Vec<char>>();
         for problem_id in alphabets {
@@ -50,6 +60,7 @@ impl Contest {
         self
     }
 
+    /// Create `SampleCases` for each fetched `Html`.
     pub fn fetch_sample_cases(&mut self) -> &mut Self {
         for html in self.problem_htmls.clone() {
             let sc = SampleCases::new(&html);
@@ -58,6 +69,7 @@ impl Contest {
         self
     }
 
+    /// Create files of sample case(s) for each problems.
     pub fn create_sample_cases_files(&self, problem_id: Option<&str>) {
         if let Some(problem_id) = problem_id {
             file_utils::create_test_files(
