@@ -1,12 +1,10 @@
-use std::env;
-use std::io;
-use std::io::Write;
-use std::fs::{ File, DirBuilder };
 use crate::sample_cases::SampleCases;
-
+use std::env;
+use std::fs::{DirBuilder, File};
+use std::io::{self, Write};
 
 // Create file of sample cases for each element of `SampleCases` struct.
-pub fn create_test_files(sc: SampleCases, problem_id: &str) -> Result<(), io::Error> {
+pub fn create_test_files(sc: &SampleCases, problem_id: &char) -> Result<(), io::Error> {
     create_directory(format!("{}_input", problem_id))?;
     create_directory(format!("{}_output", problem_id))?;
 
@@ -28,8 +26,7 @@ fn create_directory(dir_name: String) -> io::Result<()> {
     dir.push(dir_name);
     if dir.is_dir() {
         Ok(())
-    }
-    else {
+    } else {
         DirBuilder::new().create(dir)
     }
 }

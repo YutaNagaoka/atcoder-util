@@ -1,45 +1,56 @@
 #[macro_use]
 extern crate clap;
 
-mod sample_cases;
+mod contest;
 mod file_utils;
+mod sample_cases;
 
-use clap::{ App, Arg, SubCommand };
+use clap::{App, Arg, SubCommand};
+use contest::Contest;
 
 fn main() {
     let app = App::new(crate_name!())
         .version(crate_version!())
         .author(crate_authors!())
         .about(crate_description!())
-        .subcommand(SubCommand::with_name("gen")
-            .about("Generate input/output format example fetched from AtCoder website.")
-            .arg(Arg::with_name("contest")
-                .help("Specify which contest to fetch.")
-                .short("c")
-                .long("contest")
-                .takes_value(true)
-                .required(true)
-            )
-            .arg(Arg::with_name("problem")
-                .help("Specify which problem to fetch.")
-                .short("p")
-                .long("problem")
-                .takes_value(true)
-            )
+        .subcommand(
+            SubCommand::with_name("gen")
+                .about("Generate input/output format example fetched from AtCoder's website.")
+                .arg(
+                    Arg::with_name("contest")
+                        .help("Specify which contest to fetch.")
+                        .short("c")
+                        .long("contest")
+                        .takes_value(true)
+                        .required(true),
+                )
+                .arg(
+                    Arg::with_name("problem")
+                        .help("Specify which problem to fetch.")
+                        .short("p")
+                        .long("problem")
+                        .takes_value(true),
+                ),
         );
 
     let matches = app.get_matches();
 
-
+    // Fetch input/output examples and write each of them into text files.
     if let Some(ref matches) = matches.subcommand_matches("gen") {
-        let contest_id = matches.value_of("contest").unwrap();
-        if let Some(problem_id) = matches.value_of("problem") {
-            let contest_url = format!("https://atcoder.jp/contests/{}/tasks/{}_{}", contest_id, contest_id, problem_id);
-            let sc = sample_cases::SampleCases::new(&contest_url);
-            file_utils::create_test_files(sc, problem_id).expect("Failed to execution.")
+        let contest_id = matches.value_of("contest");
+        let problem_id = matches.value_of("problem");
+
+        // Problem is specified (such as "a", "b", "c"...).
+        if let Some(contest_id) = contest_id {
+            let mut contest_info = Contest::new(contest_id, problem_id);
+            contest_info.fetch_sample_cases();
+            contest_info.create_sample_cases_files(problem_id);
         }
-    }
-    else {
+        // Or all problems in a contest.
+        else {
+            println!("You have to specify from which contest to fetch sample cases.");
+        }
+    } else {
         ()
     }
 }
