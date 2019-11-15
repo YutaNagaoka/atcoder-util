@@ -1,15 +1,17 @@
 #[macro_use]
 extern crate clap;
 
-mod contest;
+mod problem;
+//mod contest;
 mod file_utils;
 mod sample_cases;
 
-use std::io;
 use clap::{App, Arg, SubCommand};
-use contest::Contest;
+use std::io;
+//use contest::Contest;
+use problem::Problem;
 
-fn main() -> Result<(), io::Error>{
+fn main() -> Result<(), io::Error> {
     let app = App::new(crate_name!())
         .version(crate_version!())
         .author(crate_authors!())
@@ -37,18 +39,26 @@ fn main() -> Result<(), io::Error>{
     let matches = app.get_matches();
 
     // Fetch input/output examples and write each of them into text files.
-    if let Some(ref matches) = matches.subcommand_matches("gen") {
-        let contest_id = matches.value_of("contest");
-        let problem_id = matches.value_of("problem");
+    match matches.subcommand_matches("gen") {
+        Some(ref matches) => {
+            let contest_id = matches.value_of("contest");
+            let problem_id = matches.value_of("problem");
 
-        // Problem is specified (such as "a", "b", "c"...).
-        if let Some(contest_id) = contest_id {
-            let mut contest_info = Contest::new(contest_id, problem_id);
-            contest_info.fetch_sample_cases();
-            contest_info.create_sample_cases_files(problem_id)?;
+            // Problem is specified (such as "a", "b", "c"...).
+            match (contest_id, problem_id) {
+                (Some(contest_id), Some(problem_id)) => {
+                    let problem = Problem::new(contest_id, problem_id);
+                    if let Some(problem) = problem {
+                        problem.create_sample_cases_files()?;
+                    }
+                }
+                //(Some(contest_id), None) => {}
+                (_, _) => {}
+            }
+            Ok(())
         }
-        Ok(())
-    } else {
-        Ok(())
+        None => {
+            Ok(())
+        }
     }
 }

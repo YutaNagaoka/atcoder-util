@@ -4,7 +4,7 @@ use std::fs::{DirBuilder, File};
 use std::io::{self, Write};
 
 // Create file of sample cases for each element of `SampleCases` struct.
-pub fn create_test_files(sc: &SampleCases, problem_id: &char) -> Result<(), io::Error> {
+pub fn create_test_files(sc: &SampleCases, problem_id: &str) -> Result<(), io::Error> {
     create_directory(format!("io_examples/{}_input", problem_id))?;
     create_directory(format!("io_examples/{}_output", problem_id))?;
 
