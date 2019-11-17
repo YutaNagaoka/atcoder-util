@@ -3,7 +3,6 @@ extern crate scraper;
 
 use scraper::{Html, Selector};
 
-
 /// Struct to contain input/output examples of a problem.
 pub struct SampleCases {
     pub input: Vec<String>,

@@ -31,7 +31,7 @@ dependencies = [
 
 [[package]]
 name = "atcoder-util"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "clap 2.33.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "reqwest 0.9.22 (registry+https://github.com/rust-lang/crates.io-index)",

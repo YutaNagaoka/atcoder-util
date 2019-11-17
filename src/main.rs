@@ -1,15 +1,14 @@
 #[macro_use]
 extern crate clap;
 
-mod contest;
-mod file_utils;
-mod sample_cases;
+mod gen;
 
 use clap::{App, Arg, SubCommand};
-use contest::Contest;
+use std::io;
 
-fn main() {
-    let app = App::new(crate_name!())
+
+fn main() -> Result<(), io::Error> {
+    let matches = App::new(crate_name!())
         .version(crate_version!())
         .author(crate_authors!())
         .about(crate_description!())
@@ -17,40 +16,39 @@ fn main() {
             SubCommand::with_name("gen")
                 .about("Generate input/output format example fetched from AtCoder's website.")
                 .arg(
-                    Arg::with_name("contest")
+                    Arg::with_name("contest name")
                         .help("Specify which contest to fetch.")
-                        .short("c")
-                        .long("contest")
                         .takes_value(true)
                         .required(true),
                 )
                 .arg(
-                    Arg::with_name("problem")
-                        .help("Specify which problem to fetch.")
-                        .short("p")
-                        .long("problem")
+                    Arg::with_name("problem id")
+                        .help("Specify which problem to fetch when a contest name is set.")
                         .takes_value(true),
                 ),
-        );
-
-    let matches = app.get_matches();
+        )
+        .get_matches();
 
     // Fetch input/output examples and write each of them into text files.
-    if let Some(ref matches) = matches.subcommand_matches("gen") {
-        let contest_id = matches.value_of("contest");
-        let problem_id = matches.value_of("problem");
+    match matches.subcommand_matches("gen") {
+        Some(ref matches) => {
+            let contest_id = matches.value_of("contest name");
+            let problem_id = matches.value_of("problem id");
 
-        // Problem is specified (such as "a", "b", "c"...).
-        if let Some(contest_id) = contest_id {
-            let mut contest_info = Contest::new(contest_id, problem_id);
-            contest_info.fetch_sample_cases();
-            contest_info.create_sample_cases_files(problem_id);
+            // Problem is specified (such as "a", "b", "c"...).
+            match (contest_id, problem_id) {
+                (Some(contest_id), Some(problem_id)) => {
+                    gen::execute_fetching_problem(contest_id, &problem_id)?;
+                }
+                (Some(contest_id), None) => {
+                    gen::execute_fetching_problems_in_contest(contest_id)?;
+                }
+                (_, _) => {}
+            }
+            Ok(())
         }
-        // Or all problems in a contest.
-        else {
-            println!("You have to specify from which contest to fetch sample cases.");
+        None => {
+            Ok(())
         }
-    } else {
-        ()
     }
 }
