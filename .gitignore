@@ -1,5 +1,4 @@
 /target
+io_examples
 **/*.rs.bk
 *.txt
-input
-output

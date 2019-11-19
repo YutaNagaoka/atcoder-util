@@ -2,9 +2,8 @@ pub mod file_utils;
 pub mod problem;
 pub mod sample_cases;
 
-use std::io;
 use problem::Problem;
-
+use std::io;
 
 pub fn execute_fetching_problem(contest_id: &str, problem_id: &str) -> Result<(), io::Error> {
     let problem = Problem::new(contest_id, &problem_id);
