@@ -1,6 +1,5 @@
 pub mod file_utils;
 pub mod problem;
-pub mod sample_cases;
 
 use problem::Problem;
 use std::io;

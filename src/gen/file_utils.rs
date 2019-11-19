@@ -1,4 +1,4 @@
-use crate::gen::sample_cases::SampleCases;
+use crate::sample_cases::SampleCases;
 use std::env;
 use std::fs::{DirBuilder, File};
 use std::io::{self, Write};

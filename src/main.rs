@@ -2,9 +2,11 @@
 extern crate clap;
 
 mod gen;
+mod sample_cases;
 
 use clap::{App, Arg, SubCommand};
 use std::io;
+use crate::sample_cases::SampleCases;
 
 fn main() -> Result<(), io::Error> {
     let matches = App::new(crate_name!())
@@ -26,26 +28,44 @@ fn main() -> Result<(), io::Error> {
                         .takes_value(true),
                 ),
         )
+        .subcommand(
+            SubCommand::with_name("test")
+                .about("Check whether your code will output right answer for each sample cases.")
+                .arg(
+                    Arg::with_name("problem id")
+                        .help("Specify which problem to test.")
+                        .takes_value(true)
+                        .required(true),
+                ),
+        )
         .get_matches();
 
     // Fetch input/output examples and write each of them into text files.
-    match matches.subcommand_matches("gen") {
-        Some(ref matches) => {
-            let contest_id = matches.value_of("contest name");
-            let problem_id = matches.value_of("problem id");
+    if let Some(ref matches) = matches.subcommand_matches("gen") {
+        let contest_id = matches.value_of("contest name");
+        let problem_id = matches.value_of("problem id");
 
-            // Problem is specified (such as "a", "b", "c"...).
-            match (contest_id, problem_id) {
-                (Some(contest_id), Some(problem_id)) => {
-                    gen::execute_fetching_problem(contest_id, &problem_id)?;
-                }
-                (Some(contest_id), None) => {
-                    gen::execute_fetching_problems_in_contest(contest_id)?;
-                }
-                (_, _) => {}
+        // Problem is specified (such as "a", "b", "c"...).
+        match (contest_id, problem_id) {
+            (Some(contest_id), Some(problem_id)) => {
+                gen::execute_fetching_problem(contest_id, &problem_id)?;
             }
-            Ok(())
+            (Some(contest_id), None) => {
+                gen::execute_fetching_problems_in_contest(contest_id)?;
+            }
+            (_, _) => {}
         }
-        None => Ok(()),
     }
+
+    if let Some(ref matches) = matches.subcommand_matches("test") {
+        let problem_id = matches.value_of("problem id");
+        if let Some(problem_id) = problem_id {
+            let sc = SampleCases::new_from_files(problem_id);
+            assert_eq!(sc.input.len(), sc.output.len());
+            for content in sc.input {
+                println!("{}", content);
+            }
+        }
+    }
+    Ok(())
 }

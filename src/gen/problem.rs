@@ -2,7 +2,7 @@ extern crate reqwest;
 extern crate scraper;
 
 use crate::gen::file_utils;
-use crate::gen::sample_cases::SampleCases;
+use crate::sample_cases::SampleCases;
 use reqwest::Url;
 use scraper::Html;
 use std::io;
