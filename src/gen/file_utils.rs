@@ -5,16 +5,27 @@ use std::io::{self, Write};
 
 // Create file of sample cases for each element of `SampleCases` struct.
 pub fn create_test_files(sc: &SampleCases, problem_id: &str) -> Result<(), io::Error> {
-    create_directory(format!("io_examples/{}_input", problem_id))?;
-    create_directory(format!("io_examples/{}_output", problem_id))?;
+    create_directory(format!("io_examples/{}", problem_id))?;
+    create_directory(format!("io_examples/{}/{}_input", problem_id, problem_id))?;
+    create_directory(format!("io_examples/{}/{}_output", problem_id, problem_id))?;
 
     for (i, input_example) in sc.input.iter().enumerate() {
-        let file_name = format!(r"io_examples/{}_input/input{}.txt", problem_id, i + 1);
+        let file_name = format!(
+            r"io_examples/{}/{}_input/input{}.txt",
+            problem_id,
+            problem_id,
+            i + 1
+        );
         create_test_file(input_example, file_name).expect("Failed to create file.");
     }
 
     for (i, output_example) in sc.output.iter().enumerate() {
-        let file_name = format!(r"io_examples/{}_output/output{}.txt", problem_id, i + 1);
+        let file_name = format!(
+            r"io_examples/{}/{}_output/output{}.txt",
+            problem_id,
+            problem_id,
+            i + 1
+        );
         create_test_file(output_example, file_name).expect("Failed to create file.");
     }
     Ok(())

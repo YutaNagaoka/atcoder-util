@@ -6,7 +6,6 @@ mod gen;
 use clap::{App, Arg, SubCommand};
 use std::io;
 
-
 fn main() -> Result<(), io::Error> {
     let matches = App::new(crate_name!())
         .version(crate_version!())
@@ -47,8 +46,6 @@ fn main() -> Result<(), io::Error> {
             }
             Ok(())
         }
-        None => {
-            Ok(())
-        }
+        None => Ok(()),
     }
 }
