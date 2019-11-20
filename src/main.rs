@@ -3,10 +3,11 @@ extern crate clap;
 
 mod gen;
 mod sample_cases;
+mod tester;
 
+use crate::tester::run_test;
 use clap::{App, Arg, SubCommand};
 use std::io;
-use crate::sample_cases::SampleCases;
 
 fn main() -> Result<(), io::Error> {
     let matches = App::new(crate_name!())
@@ -60,11 +61,8 @@ fn main() -> Result<(), io::Error> {
     if let Some(ref matches) = matches.subcommand_matches("test") {
         let problem_id = matches.value_of("problem id");
         if let Some(problem_id) = problem_id {
-            let sc = SampleCases::new_from_files(problem_id);
-            assert_eq!(sc.input.len(), sc.output.len());
-            for content in sc.input {
-                println!("{}", content);
-            }
+            let status = run_test::run_test(problem_id);
+            println!("{:?}", status);
         }
     }
     Ok(())

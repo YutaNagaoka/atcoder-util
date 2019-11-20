@@ -56,7 +56,7 @@ impl SampleCases {
         let html_lang_ja = html.select(&selector_lang_ja).nth(0).unwrap().html();
         let html_io_example = Html::parse_fragment(&html_lang_ja);
 
-        let io_examples: Vec<String> = html_io_example
+        let mut io_examples: Vec<String> = html_io_example
             .select(&selector_io_example)
             .filter(|example| example.children().count() == 1)
             .map(|example| example.text().collect::<Vec<&str>>().join(""))
@@ -66,7 +66,7 @@ impl SampleCases {
     }
 
     /// Push i/o examples to vector in a struct itself.
-    pub fn extract_io_example(&mut self, io_examples: Vec<String>) {
+    fn extract_io_example(&mut self, io_examples: Vec<String>) {
         for (i, io_example) in io_examples.iter().enumerate() {
             // IO example of even index is input.
             if i % 2 == 0 {
