@@ -56,7 +56,7 @@ impl SampleCases {
         let html_lang_ja = html.select(&selector_lang_ja).nth(0).unwrap().html();
         let html_io_example = Html::parse_fragment(&html_lang_ja);
 
-        let mut io_examples: Vec<String> = html_io_example
+        let io_examples: Vec<String> = html_io_example
             .select(&selector_io_example)
             .filter(|example| example.children().count() == 1)
             .map(|example| example.text().collect::<Vec<&str>>().join(""))

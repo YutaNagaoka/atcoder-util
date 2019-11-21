@@ -61,8 +61,7 @@ fn main() -> Result<(), io::Error> {
     if let Some(ref matches) = matches.subcommand_matches("test") {
         let problem_id = matches.value_of("problem id");
         if let Some(problem_id) = problem_id {
-            let status = run_test::run_test(problem_id);
-            println!("{:?}", status);
+            run_test::run_test_all(problem_id);
         }
     }
     Ok(())
