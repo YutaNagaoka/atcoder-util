@@ -3,7 +3,7 @@ use std::env;
 use std::fs::{DirBuilder, File};
 use std::io::{self, Write};
 
-// Create file of sample cases for each element of `SampleCases` struct.
+/// Create file of sample cases for each element of `SampleCases` struct.
 pub fn create_test_files(sc: &SampleCases, problem_id: &str) -> Result<(), io::Error> {
     create_directory(format!("io_examples/{}", problem_id))?;
     create_directory(format!("io_examples/{}/{}_input", problem_id, problem_id))?;
@@ -31,7 +31,7 @@ pub fn create_test_files(sc: &SampleCases, problem_id: &str) -> Result<(), io::E
     Ok(())
 }
 
-// Create directory named `dir_name` under the current directory if it doesn't exist.
+/// Create directory named `dir_name` under the current directory if it doesn't exist.
 pub fn create_directory(dir_name: String) -> io::Result<()> {
     let mut dir = env::current_dir()?;
     dir.push(dir_name);
@@ -42,7 +42,7 @@ pub fn create_directory(dir_name: String) -> io::Result<()> {
     }
 }
 
-// Write `file_content` on a file.
+/// Write `file_content` on a file.
 fn create_test_file(file_content: &String, file_name: String) -> Result<(), io::Error> {
     let file = File::create(file_name)?;
     let mut writer = io::BufWriter::new(file);

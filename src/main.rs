@@ -1,9 +1,34 @@
+//! **atcoder-util** make it easy to test for your code in sample cases in competitive programming.
+//!
+//! ## Gen
+//!
+//! First, you have to fetch input/output example from AtCoder's website.
+//! If you provide only contest name, sample cases of all problem in the contest will be downloaded.
+//!
+//! ```
+//! $ atcoder-util gen abc145
+//! ```
+//!
+//! Or if you specify a contest name and a problem, sample cases of the problem will be downloaded.
+//! ```
+//! $ atcoder-util gen abc145 c
+//! ```
+//!
+//! ## Test
+//!
+//! After you fetched sample cases, you can run check whether its answer is correct in all at once.
+//!
+//! ```
+//! $ atcoder-util test c
+//! ```
+//!
+
 #[macro_use]
 extern crate clap;
 
-mod gen;
-mod sample_cases;
-mod tester;
+pub mod gen;
+pub mod sample_cases;
+pub mod tester;
 
 use crate::tester::run_test;
 use clap::{App, Arg, SubCommand};
