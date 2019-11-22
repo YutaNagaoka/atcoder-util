@@ -7,7 +7,6 @@ use reqwest::Url;
 use scraper::Html;
 use std::io;
 
-
 /// Contains information of a problem in a contest.
 pub struct Problem<'a> {
     pub contest_id: &'a str,

@@ -26,11 +26,10 @@
 #[macro_use]
 extern crate clap;
 
-pub mod gen;
-pub mod sample_cases;
-pub mod tester;
+extern crate atcoder_util;
 
-use crate::tester::run_test;
+use atcoder_util::gen;
+use atcoder_util::tester;
 use clap::{App, Arg, SubCommand};
 use std::io;
 
@@ -86,7 +85,7 @@ fn main() -> Result<(), io::Error> {
     if let Some(ref matches) = matches.subcommand_matches("test") {
         let problem_id = matches.value_of("problem id");
         if let Some(problem_id) = problem_id {
-            run_test::run_test_all(problem_id);
+            tester::run_test::run_test_all(problem_id);
         }
     }
     Ok(())

@@ -1,10 +1,9 @@
 extern crate colored;
 
-use colored::Colorize;
 use crate::sample_cases::SampleCases;
+use colored::Colorize;
 use std::io::Write;
 use std::process::{Command, Stdio};
-
 
 /// Run a program and validate answer for each sample cases.
 pub fn run_test_all(problem_id: &str) {

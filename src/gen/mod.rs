@@ -4,7 +4,6 @@ pub mod problem;
 use problem::Problem;
 use std::io;
 
-
 /// Fetch a specific problem in a contest.
 pub fn execute_fetching_problem(contest_id: &str, problem_id: &str) -> Result<(), io::Error> {
     let problem = Problem::new(contest_id, &problem_id);
