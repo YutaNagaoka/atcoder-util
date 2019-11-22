@@ -2,3 +2,5 @@
 io_examples
 **/*.rs.bk
 *.txt
+*.cpp
+*.exe

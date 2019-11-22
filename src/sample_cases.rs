@@ -2,6 +2,8 @@ extern crate reqwest;
 extern crate scraper;
 
 use scraper::{Html, Selector};
+use std::fs;
+use std::path::PathBuf;
 
 /// Struct to contain input/output examples of a problem.
 pub struct SampleCases {
@@ -18,6 +20,31 @@ impl SampleCases {
         };
         let io_examples = SampleCases::parse_io_examples(html);
         sc.extract_io_example(io_examples);
+        sc
+    }
+
+    /// Construct a new `SampleCases` from input/output example files.
+    /// This method is called in `atcoder-util test`.
+    pub fn new_from_files(problem_id: &str) -> Self {
+        let mut sc = SampleCases {
+            input: Vec::new(),
+            output: Vec::new(),
+        };
+
+        let mut dir_io_examples = PathBuf::new();
+        dir_io_examples.push(format!("io_examples/{}", problem_id));
+        for dir_res in fs::read_dir(dir_io_examples).unwrap() {
+            let dir_name = dir_res.unwrap().path();
+            for file_res in fs::read_dir(&dir_name).unwrap() {
+                let file = file_res.unwrap();
+                let file_content = fs::read_to_string(file.path()).unwrap();
+                if dir_name.ends_with(&format!("{}_input", problem_id)) {
+                    sc.input.push(file_content);
+                } else {
+                    sc.output.push(file_content);
+                }
+            }
+        }
         sc
     }
 
@@ -39,7 +66,7 @@ impl SampleCases {
     }
 
     /// Push i/o examples to vector in a struct itself.
-    pub fn extract_io_example(&mut self, io_examples: Vec<String>) {
+    fn extract_io_example(&mut self, io_examples: Vec<String>) {
         for (i, io_example) in io_examples.iter().enumerate() {
             // IO example of even index is input.
             if i % 2 == 0 {
