@@ -1,9 +1,7 @@
 extern crate atcoder_util;
 
 use atcoder_util::gen;
-use std::collections::HashMap;
 use std::fs;
-use std::path::PathBuf;
 
 #[test]
 fn test_fetch_one_problem() {
