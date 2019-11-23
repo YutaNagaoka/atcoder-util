@@ -25,7 +25,6 @@
 
 #[macro_use]
 extern crate clap;
-
 extern crate atcoder_util;
 
 use atcoder_util::gen;
