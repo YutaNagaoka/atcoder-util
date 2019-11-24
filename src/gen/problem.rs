@@ -40,9 +40,10 @@ impl<'a> Problem<'a> {
 
     /// Fetch `Html` of a problem.
     fn fetch_problem_html(contest_id: &'a str, problem_id: &'a str) -> Option<Html> {
+        let problem_name = format!("{}_{}",contest_id.replace("-", "_"), problem_id);
         let url = format!(
-            "https://atcoder.jp/contests/{}/tasks/{}_{}",
-            contest_id, contest_id, problem_id
+            "https://atcoder.jp/contests/{}/tasks/{}",
+            contest_id, problem_name
         );
         let parsed_url = Url::parse(&url).unwrap();
         let mut res = reqwest::get(parsed_url).unwrap();
