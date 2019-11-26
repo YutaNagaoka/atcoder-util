@@ -33,10 +33,17 @@ impl SampleCases {
 
         let mut dir_io_examples = PathBuf::new();
         dir_io_examples.push(format!("io_examples/{}", problem_id));
+
         for dir_res in fs::read_dir(dir_io_examples).unwrap() {
             let dir_name = dir_res.unwrap().path();
-            for file_res in fs::read_dir(&dir_name).unwrap() {
-                let file = file_res.unwrap();
+            // Sort i/o example files because an order of `fs::read_dir()` returns directory depends on environment.
+            let mut dir_sample_case: Vec<_> = fs::read_dir(&dir_name)
+                .unwrap()
+                .map(|d| d.unwrap())
+                .collect();
+            dir_sample_case.sort_by_key(|dir| dir.path());
+
+            for file in dir_sample_case {
                 let file_content = fs::read_to_string(file.path()).unwrap();
                 if dir_name.ends_with(&format!("{}_input", problem_id)) {
                     sc.input.push(file_content);
