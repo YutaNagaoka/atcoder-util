@@ -84,7 +84,10 @@ fn main() -> Result<(), io::Error> {
     if let Some(ref matches) = matches.subcommand_matches("test") {
         let problem_id = matches.value_of("problem id");
         if let Some(problem_id) = problem_id {
-            tester::run_test::run_test_all(problem_id);
+            let test_result = tester::run_test::run_test_all(problem_id);
+            if test_result {
+                println!("Passed all tests.");
+            }
         }
     }
     Ok(())

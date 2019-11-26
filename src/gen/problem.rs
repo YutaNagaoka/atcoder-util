@@ -40,7 +40,7 @@ impl<'a> Problem<'a> {
 
     /// Fetch `Html` of a problem.
     fn fetch_problem_html(contest_id: &'a str, problem_id: &'a str) -> Option<Html> {
-        let problem_name = format!("{}_{}",contest_id.replace("-", "_"), problem_id);
+        let problem_name = format!("{}_{}", contest_id.replace("-", "_"), problem_id);
         let url = format!(
             "https://atcoder.jp/contests/{}/tasks/{}",
             contest_id, problem_name
